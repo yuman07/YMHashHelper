@@ -13,6 +13,7 @@
 		88A960CA214A3B0C0071C166 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A960C9214A3B0C0071C166 /* Assets.xcassets */; };
 		88A960CD214A3B0C0071C166 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88A960CB214A3B0C0071C166 /* LaunchScreen.storyboard */; };
 		88A960D0214A3B0C0071C166 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A960CF214A3B0C0071C166 /* main.m */; };
+		88A960D8214A3B190071C166 /* YMHashHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 88A960D7214A3B190071C166 /* YMHashHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		88A960CC214A3B0C0071C166 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88A960CE214A3B0C0071C166 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88A960CF214A3B0C0071C166 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		88A960D6214A3B190071C166 /* YMHashHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YMHashHelper.h; sourceTree = "<group>"; };
+		88A960D7214A3B190071C166 /* YMHashHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YMHashHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		88A960BF214A3B0B0071C166 /* YMHashHelper */ = {
 			isa = PBXGroup;
 			children = (
+				88A960D9214A3B220071C166 /* YMHashHelper */,
 				88A960C0214A3B0B0071C166 /* AppDelegate.h */,
 				88A960C1214A3B0B0071C166 /* AppDelegate.m */,
 				88A960C3214A3B0B0071C166 /* ViewController.h */,
@@ -67,6 +71,15 @@
 				88A960CB214A3B0C0071C166 /* LaunchScreen.storyboard */,
 				88A960CE214A3B0C0071C166 /* Info.plist */,
 				88A960CF214A3B0C0071C166 /* main.m */,
+			);
+			path = YMHashHelper;
+			sourceTree = "<group>";
+		};
+		88A960D9214A3B220071C166 /* YMHashHelper */ = {
+			isa = PBXGroup;
+			children = (
+				88A960D6214A3B190071C166 /* YMHashHelper.h */,
+				88A960D7214A3B190071C166 /* YMHashHelper.m */,
 			);
 			path = YMHashHelper;
 			sourceTree = "<group>";
@@ -144,6 +157,7 @@
 				88A960C5214A3B0B0071C166 /* ViewController.m in Sources */,
 				88A960D0214A3B0C0071C166 /* main.m in Sources */,
 				88A960C2214A3B0B0071C166 /* AppDelegate.m in Sources */,
+				88A960D8214A3B190071C166 /* YMHashHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
