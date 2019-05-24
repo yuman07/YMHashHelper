@@ -8,24 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, YMHashHelperType) {
-    YMHashHelperTypeMD5,
-    YMHashHelperTypeSHA1,
-    YMHashHelperTypeSHA256,
-    YMHashHelperTypeSHA512
-};
-
 /**
- 用于获得一个字符串/文件/Data的hash值
- 如果传入的参数不合法，则返回nil
- 返回的哈希字符串均是小写
+ 用于计算字符串/data/文件的hash值
+ 如果计算hash失败，则返回nil
+ 返回的hash字符串均是小写
  */
 @interface YMHashHelper : NSObject
 
-+ (NSString *)hashString:(NSString *)string WithHashType:(YMHashHelperType)type;
+// 对字符串进行hash
++ (NSString *)md5WithString:(NSString *)string;
++ (NSString *)sha1WithString:(NSString *)string;
++ (NSString *)sha256WithString:(NSString *)string;
++ (NSString *)sha512WithString:(NSString *)string;
 
-+ (NSString *)hashFile:(NSString *)filePath WithHashType:(YMHashHelperType)type;
+// 对data进行hash
++ (NSString *)md5WithData:(NSData *)data;
++ (NSString *)sha1WithData:(NSData *)data;
++ (NSString *)sha256WithData:(NSData *)data;
++ (NSString *)sha512WithData:(NSData *)data;
 
-+ (NSString *)hashData:(NSData *)data WithHashType:(YMHashHelperType)type;
+// 对文件进行hash
++ (NSString *)md5WithFilePath:(NSString *)filePath;
++ (NSString *)sha1WithFilePath:(NSString *)filePath;
++ (NSString *)sha256WithFilePath:(NSString *)filePath;
++ (NSString *)sha512WithFilePath:(NSString *)filePath;
 
 @end
