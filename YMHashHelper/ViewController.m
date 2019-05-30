@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "YMHashHelper.h"
+#import "YMHashHelper/YMHashHelper.h"
 
 @interface ViewController ()
 
@@ -19,6 +19,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    NSString *md5    = [YMHashHelper md5WithString:@"你好test123"];
+    NSString *sha1   = [YMHashHelper sha1WithString:@"你好test123"];
+    NSString *sha256 = [YMHashHelper sha256WithString:@"你好test123"];
+    NSString *sha512 = [YMHashHelper sha512WithString:@"你好test123"];
+    
+    NSLog(@"%@\n%@\n%@\n%@", md5, sha1, sha256, sha512);
 }
 
 

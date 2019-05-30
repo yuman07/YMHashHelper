@@ -25,16 +25,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         return nil;
     }
     
-    const char *cStr = string.UTF8String;
-    unsigned char result[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
-    
-    NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    for (NSUInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
-        [hash appendFormat:@"%02x", result[i]];
-    }
-    
-    return [[hash lowercaseString] copy];
+    return [self md5WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 + (NSString *)sha1WithString:(NSString *)string
@@ -43,16 +34,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         return nil;
     }
     
-    const char *cStr = string.UTF8String;
-    unsigned char result[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1(cStr, (CC_LONG)strlen(cStr), result);
-    
-    NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
-    for (NSUInteger i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
-        [hash appendFormat:@"%02x", result[i]];
-    }
-    
-    return [[hash lowercaseString] copy];
+    return [self sha1WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 + (NSString *)sha256WithString:(NSString *)string
@@ -61,16 +43,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         return nil;
     }
     
-    const char *cStr = string.UTF8String;
-    unsigned char result[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(cStr, (CC_LONG)strlen(cStr), result);
-    
-    NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
-    for (NSUInteger i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
-        [hash appendFormat:@"%02x", result[i]];
-    }
-    
-    return [[hash lowercaseString] copy];
+    return [self sha256WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 + (NSString *)sha512WithString:(NSString *)string
@@ -79,16 +52,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         return nil;
     }
     
-    const char *cStr = string.UTF8String;
-    unsigned char result[CC_SHA512_DIGEST_LENGTH];
-    CC_SHA512(cStr, (CC_LONG)strlen(cStr), result);
-    
-    NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_SHA512_DIGEST_LENGTH * 2];
-    for (NSUInteger i = 0; i < CC_SHA512_DIGEST_LENGTH; i++) {
-        [hash appendFormat:@"%02x", result[i]];
-    }
-    
-    return [[hash lowercaseString] copy];
+    return [self sha512WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 + (NSString *)md5WithData:(NSData *)data
@@ -104,7 +68,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha1WithData:(NSData *)data
@@ -120,7 +84,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha256WithData:(NSData *)data
@@ -136,7 +100,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha512WithData:(NSData *)data
@@ -152,7 +116,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)md5WithFilePath:(NSString *)filePath
@@ -172,7 +136,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     while(YES) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
-            if (!CHECK_DATA_VALID(fileData)) break;
+            if (fileData.length == 0) break;
             CC_MD5_Update(&md5, [fileData bytes], (CC_LONG)[fileData length]);
         }
     }
@@ -185,7 +149,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha1WithFilePath:(NSString *)filePath
@@ -205,7 +169,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     while(YES) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
-            if (!CHECK_DATA_VALID(fileData)) break;
+            if (fileData.length == 0) break;
             CC_SHA1_Update(&sha1, [fileData bytes], (CC_LONG)[fileData length]);
         }
     }
@@ -218,7 +182,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha256WithFilePath:(NSString *)filePath
@@ -238,7 +202,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     while(YES) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
-            if (!CHECK_DATA_VALID(fileData)) break;
+            if (fileData.length == 0) break;
             CC_SHA256_Update(&sha256, [fileData bytes], (CC_LONG)[fileData length]);
         }
     }
@@ -251,7 +215,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 + (NSString *)sha512WithFilePath:(NSString *)filePath
@@ -268,11 +232,10 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     CC_SHA512_CTX sha512;
     CC_SHA512_Init(&sha512);
-    BOOL hasMoreData = YES;
-    while(hasMoreData) {
+    while(YES) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
-            if (!CHECK_DATA_VALID(fileData)) break;
+            if (fileData.length == 0) break;
             CC_SHA512_Update(&sha512, [fileData bytes], (CC_LONG)[fileData length]);
         }
     }
@@ -285,7 +248,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         [hash appendFormat:@"%02x", result[i]];
     }
     
-    return [[hash lowercaseString] copy];
+    return [hash copy];
 }
 
 @end
