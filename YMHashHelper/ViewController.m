@@ -25,6 +25,12 @@
     NSString *sha512 = [YMHashHelper sha512WithString:@"你好test123"];
     
     NSLog(@"%@\n%@\n%@\n%@", md5, sha1, sha256, sha512);
+    
+    YMHashHelper *helper = [[YMHashHelper alloc] init];
+    [helper sha256UpdateWithData:[@"你好" dataUsingEncoding:NSUTF8StringEncoding]];
+    [helper sha256UpdateWithData:[@"test123" dataUsingEncoding:NSUTF8StringEncoding]];
+    NSString *hash = [helper hashTaskComplete];
+    
 }
 
 

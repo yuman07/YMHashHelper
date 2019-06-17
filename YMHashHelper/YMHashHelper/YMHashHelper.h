@@ -33,4 +33,13 @@
 + (NSString *)sha256WithFilePath:(NSString *)filePath;
 + (NSString *)sha512WithFilePath:(NSString *)filePath;
 
+// 流式计算data的hash值
+- (void)md5UpdateWithData:(NSData *)data;
+- (void)sha1UpdateWithData:(NSData *)data;
+- (void)sha256UpdateWithData:(NSData *)data;
+- (void)sha512UpdateWithData:(NSData *)data;
+
+// data传完后，调用此方法获得hash字符串
+- (NSString *)hashTaskComplete;
+
 @end
