@@ -49,12 +49,13 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     return self;
 }
 
+#pragma mark --- oneShot hash
+
 + (NSString *)md5WithString:(NSString *)string
 {
     if (!CHECK_STRING_VALID(string)) {
         return nil;
     }
-    
     return [self md5WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -63,7 +64,6 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     if (!CHECK_STRING_VALID(string)) {
         return nil;
     }
-    
     return [self sha1WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -72,7 +72,6 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     if (!CHECK_STRING_VALID(string)) {
         return nil;
     }
-    
     return [self sha256WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -81,7 +80,6 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     if (!CHECK_STRING_VALID(string)) {
         return nil;
     }
-    
     return [self sha512WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
 }
 

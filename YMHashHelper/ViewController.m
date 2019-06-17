@@ -30,6 +30,7 @@
     [helper sha256UpdateWithData:[@"你好" dataUsingEncoding:NSUTF8StringEncoding]];
     [helper sha256UpdateWithData:[@"test123" dataUsingEncoding:NSUTF8StringEncoding]];
     NSString *hash = [helper hashTaskComplete];
+    NSLog(@"%@", hash);
     
 }
 
