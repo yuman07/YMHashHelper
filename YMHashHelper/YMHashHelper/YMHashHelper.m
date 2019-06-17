@@ -283,7 +283,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 - (void)md5UpdateWithData:(NSData *)data
 {
-    dispatch_sync(self.queue, ^{
+    dispatch_async(self.queue, ^{
         if (self.isHappenError) {
             return;
         }
@@ -308,7 +308,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 - (void)sha1UpdateWithData:(NSData *)data
 {
-    dispatch_sync(self.queue, ^{
+    dispatch_async(self.queue, ^{
         if (self.isHappenError) {
             return;
         }
@@ -333,7 +333,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 - (void)sha256UpdateWithData:(NSData *)data
 {
-    dispatch_sync(self.queue, ^{
+    dispatch_async(self.queue, ^{
         if (self.isHappenError) {
             return;
         }
@@ -358,7 +358,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 - (void)sha512UpdateWithData:(NSData *)data
 {
-    dispatch_sync(self.queue, ^{
+    dispatch_async(self.queue, ^{
         if (self.isHappenError) {
             return;
         }
