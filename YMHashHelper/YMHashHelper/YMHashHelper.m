@@ -161,11 +161,11 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     CC_MD5_CTX md5;
     CC_MD5_Init(&md5);
-    while(YES) {
+    for(;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
-            CC_MD5_Update(&md5, [fileData bytes], (CC_LONG)[fileData length]);
+            CC_MD5_Update(&md5, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
     [handle closeFile];
@@ -194,11 +194,11 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     CC_SHA1_CTX sha1;
     CC_SHA1_Init(&sha1);
-    while(YES) {
+    for(;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
-            CC_SHA1_Update(&sha1, [fileData bytes], (CC_LONG)[fileData length]);
+            CC_SHA1_Update(&sha1, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
     [handle closeFile];
@@ -227,11 +227,11 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     CC_SHA256_CTX sha256;
     CC_SHA256_Init(&sha256);
-    while(YES) {
+    for(;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
-            CC_SHA256_Update(&sha256, [fileData bytes], (CC_LONG)[fileData length]);
+            CC_SHA256_Update(&sha256, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
     [handle closeFile];
@@ -260,11 +260,11 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     CC_SHA512_CTX sha512;
     CC_SHA512_Init(&sha512);
-    while(YES) {
+    for(;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
-            CC_SHA512_Update(&sha512, [fileData bytes], (CC_LONG)[fileData length]);
+            CC_SHA512_Update(&sha512, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
     [handle closeFile];
@@ -302,7 +302,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        CC_MD5_Update(&self->_md5CTX, [data bytes], (CC_LONG)[data length]);
+        CC_MD5_Update(&self->_md5CTX, data.bytes, (CC_LONG)data.length);
     });
 }
 
@@ -327,7 +327,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        CC_SHA1_Update(&self->_sha1CTX, [data bytes], (CC_LONG)[data length]);
+        CC_SHA1_Update(&self->_sha1CTX, data.bytes, (CC_LONG)data.length);
     });
 }
 
@@ -352,7 +352,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        CC_SHA256_Update(&self->_sha256CTX, [data bytes], (CC_LONG)[data length]);
+        CC_SHA256_Update(&self->_sha256CTX, data.bytes, (CC_LONG)data.length);
     });
 }
 
@@ -377,7 +377,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        CC_SHA512_Update(&self->_sha512CTX, [data bytes], (CC_LONG)[data length]);
+        CC_SHA512_Update(&self->_sha512CTX, data.bytes, (CC_LONG)data.length);
     });
 }
 
@@ -433,7 +433,6 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             default:
                 break;
         }
-        
     });
     return [hash copy];
 }
