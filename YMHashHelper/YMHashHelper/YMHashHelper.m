@@ -154,14 +154,13 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     }
     
     NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    
     if (!handle) {
         return nil;
     }
     
     CC_MD5_CTX md5;
     CC_MD5_Init(&md5);
-    for(;;) {
+    for (;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
@@ -187,14 +186,13 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     }
     
     NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    
     if (!handle) {
         return nil;
     }
     
     CC_SHA1_CTX sha1;
     CC_SHA1_Init(&sha1);
-    for(;;) {
+    for (;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
@@ -220,14 +218,13 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     }
     
     NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    
     if (!handle) {
         return nil;
     }
     
     CC_SHA256_CTX sha256;
     CC_SHA256_Init(&sha256);
-    for(;;) {
+    for (;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
@@ -253,14 +250,13 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     }
     
     NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:filePath];
-    
     if (!handle) {
         return nil;
     }
     
     CC_SHA512_CTX sha512;
     CC_SHA512_Init(&sha512);
-    for(;;) {
+    for (;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
