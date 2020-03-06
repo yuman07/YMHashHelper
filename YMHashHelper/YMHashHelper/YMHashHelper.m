@@ -10,10 +10,10 @@
 #import <CommonCrypto/CommonDigest.h>
 
 #define CHECK_STRING_VALID(_STRING_) \
-({ NSString *__v__ = (_STRING_); (__v__ && [__v__ isKindOfClass:[NSString class]] && (__v__.length > 0)); })
+({ id __a__ = (_STRING_); (__a__ && [__a__ isKindOfClass:[NSString class]] && (((NSString *)__a__).length > 0)); })
 
 #define CHECK_DATA_VALID(_DATA_) \
-({ NSData *__v__ = (_DATA_); (__v__ && [__v__ isKindOfClass:[NSData class]] && (__v__.length > 0)); })
+({ id __a__ = (_DATA_); (__a__ && [__a__ isKindOfClass:[NSData class]] && (((NSData *)__a__).length > 0)); })
 
 typedef NS_ENUM(NSInteger, YMHashHelperType) {
     YMHashHelperTypeNone,
@@ -29,7 +29,8 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 @property (nonatomic, strong) dispatch_queue_t queue;
 @property (nonatomic, assign) YMHashHelperType hashType;
-@property (nonatomic, assign) BOOL isHappenError;
+@property (nonatomic, assign) BOOL isCompleted;
+@property (nonatomic, strong) NSMutableString *resultString;
 
 @property (nonatomic, assign) CC_MD5_CTX md5CTX;
 @property (nonatomic, assign) CC_SHA1_CTX sha1CTX;
@@ -44,7 +45,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 {
     self = [super init];
     if (self) {
-        _queue = dispatch_queue_create([[NSString stringWithFormat:@"com.YMHashHelper.%@", self] UTF8String], DISPATCH_QUEUE_SERIAL);
+        _queue = dispatch_queue_create([[NSString stringWithFormat:@"com.YMHashHelper.%p", self] UTF8String], DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -280,7 +281,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 - (void)md5UpdateWithData:(NSData *)data
 {
     dispatch_async(self.queue, ^{
-        if (self.isHappenError) {
+        if (self.isCompleted) {
             return;
         }
         
@@ -294,7 +295,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         }
         
         if (self.hashType != YMHashHelperTypeMD5) {
-            self.isHappenError = YES;
+            self.isCompleted = YES;
             return;
         }
         
@@ -305,7 +306,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 - (void)sha1UpdateWithData:(NSData *)data
 {
     dispatch_async(self.queue, ^{
-        if (self.isHappenError) {
+        if (self.isCompleted) {
             return;
         }
         
@@ -319,7 +320,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         }
         
         if (self.hashType != YMHashHelperTypeSHA1) {
-            self.isHappenError = YES;
+            self.isCompleted = YES;
             return;
         }
         
@@ -330,7 +331,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 - (void)sha256UpdateWithData:(NSData *)data
 {
     dispatch_async(self.queue, ^{
-        if (self.isHappenError) {
+        if (self.isCompleted) {
             return;
         }
         
@@ -344,7 +345,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         }
         
         if (self.hashType != YMHashHelperTypeSHA256) {
-            self.isHappenError = YES;
+            self.isCompleted = YES;
             return;
         }
         
@@ -355,7 +356,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 - (void)sha512UpdateWithData:(NSData *)data
 {
     dispatch_async(self.queue, ^{
-        if (self.isHappenError) {
+        if (self.isCompleted) {
             return;
         }
         
@@ -369,7 +370,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         }
         
         if (self.hashType != YMHashHelperTypeSHA512) {
-            self.isHappenError = YES;
+            self.isCompleted = YES;
             return;
         }
         
@@ -379,19 +380,20 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 - (NSString *)hashTaskComplete
 {
-    __block NSMutableString *hash = nil;
     dispatch_sync(self.queue, ^{
-        if (self.isHappenError) {
+        if (self.isCompleted) {
             return;
         }
+        
+        self.isCompleted = YES;
         
         switch (self.hashType) {
             case YMHashHelperTypeMD5: {
                 unsigned char result[CC_MD5_DIGEST_LENGTH];
                 CC_MD5_Final(result, &self->_md5CTX);
-                hash = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+                self.resultString = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
                 for (NSUInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
-                    [hash appendFormat:@"%02x", result[i]];
+                    [self.resultString appendFormat:@"%02x", result[i]];
                 }
                 break;
             }
@@ -399,9 +401,9 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             case YMHashHelperTypeSHA1: {
                 unsigned char result[CC_SHA1_DIGEST_LENGTH];
                 CC_SHA1_Final(result, &self->_sha1CTX);
-                hash = [[NSMutableString alloc] initWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+                self.resultString = [[NSMutableString alloc] initWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
                 for (NSUInteger i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
-                    [hash appendFormat:@"%02x", result[i]];
+                    [self.resultString appendFormat:@"%02x", result[i]];
                 }
                 break;
             }
@@ -409,9 +411,9 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             case YMHashHelperTypeSHA256: {
                 unsigned char result[CC_SHA256_DIGEST_LENGTH];
                 CC_SHA256_Final(result, &self->_sha256CTX);
-                hash = [[NSMutableString alloc] initWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+                self.resultString = [[NSMutableString alloc] initWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
                 for (NSUInteger i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
-                    [hash appendFormat:@"%02x", result[i]];
+                    [self.resultString appendFormat:@"%02x", result[i]];
                 }
                 break;
             }
@@ -419,9 +421,9 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             case YMHashHelperTypeSHA512: {
                 unsigned char result[CC_SHA512_DIGEST_LENGTH];
                 CC_SHA512_Final(result, &self->_sha512CTX);
-                hash = [[NSMutableString alloc] initWithCapacity:CC_SHA512_DIGEST_LENGTH * 2];
+                self.resultString = [[NSMutableString alloc] initWithCapacity:CC_SHA512_DIGEST_LENGTH * 2];
                 for (NSUInteger i = 0; i < CC_SHA512_DIGEST_LENGTH; i++) {
-                    [hash appendFormat:@"%02x", result[i]];
+                    [self.resultString appendFormat:@"%02x", result[i]];
                 }
                 break;
             }
@@ -430,7 +432,8 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
                 break;
         }
     });
-    return [hash copy];
+    
+    return [self.resultString copy];
 }
 
 @end
