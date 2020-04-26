@@ -45,4 +45,7 @@
 /// 注意调用完此方法后，此helper再调用update方法将无效
 - (NSString *)hashTaskComplete;
 
+/// 如果想复用一个helper，可调用此方法对helper进行重置
+- (void)reset;
+
 @end
