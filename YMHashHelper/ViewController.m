@@ -32,6 +32,13 @@
     NSString *hash = [helper hashTaskComplete];
     NSLog(@"%@", hash);
     
+    NSString *text = @"你好123456";
+    NSString *documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"123.txt"];
+    [text writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    
+    NSLog(@"file : %@", [YMHashHelper md5WithFilePath:filePath]);
+    
 }
 
 
