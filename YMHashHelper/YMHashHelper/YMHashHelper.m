@@ -92,7 +92,10 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CC_MD5(data.bytes, (CC_LONG)data.length, result);
+    #pragma clang diagnostic pop
     for (NSUInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
         [hash appendFormat:@"%02x", result[i]];
     }
@@ -160,18 +163,32 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     }
     
     CC_MD5_CTX md5;
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CC_MD5_Init(&md5);
+    #pragma clang diagnostic pop
     for (;;) {
         @autoreleasepool {
             NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
             if (fileData.length == 0) break;
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             CC_MD5_Update(&md5, fileData.bytes, (CC_LONG)fileData.length);
+            #pragma clang diagnostic pop
         }
     }
-    [handle closeFile];
+    
+    if (@available(iOS 13.0, *)) {
+        [handle closeAndReturnError:nil];
+    } else {
+        [handle closeFile];
+    }
     
     unsigned char result[CC_MD5_DIGEST_LENGTH];
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CC_MD5_Final(result, &md5);
+    #pragma clang diagnostic pop
     NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
     for (NSUInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
         [hash appendFormat:@"%02x", result[i]];
@@ -200,7 +217,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             CC_SHA1_Update(&sha1, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
-    [handle closeFile];
+    
+    if (@available(iOS 13.0, *)) {
+        [handle closeAndReturnError:nil];
+    } else {
+        [handle closeFile];
+    }
     
     unsigned char result[CC_SHA1_DIGEST_LENGTH];
     CC_SHA1_Final(result, &sha1);
@@ -232,7 +254,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             CC_SHA256_Update(&sha256, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
-    [handle closeFile];
+    
+    if (@available(iOS 13.0, *)) {
+        [handle closeAndReturnError:nil];
+    } else {
+        [handle closeFile];
+    }
     
     unsigned char result[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256_Final(result, &sha256);
@@ -264,7 +291,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             CC_SHA512_Update(&sha512, fileData.bytes, (CC_LONG)fileData.length);
         }
     }
-    [handle closeFile];
+    
+    if (@available(iOS 13.0, *)) {
+        [handle closeAndReturnError:nil];
+    } else {
+        [handle closeFile];
+    }
     
     unsigned char result[CC_SHA512_DIGEST_LENGTH];
     CC_SHA512_Final(result, &sha512);
@@ -291,15 +323,20 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         
         if (self.hashType == YMHashHelperTypeNone) {
             self.hashType = YMHashHelperTypeMD5;
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             CC_MD5_Init(&self->_md5CTX);
+            #pragma clang diagnostic pop
         }
         
         if (self.hashType != YMHashHelperTypeMD5) {
             self.isCompleted = YES;
             return;
         }
-        
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         CC_MD5_Update(&self->_md5CTX, data.bytes, (CC_LONG)data.length);
+        #pragma clang diagnostic pop
     });
 }
 
@@ -390,7 +427,10 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
         switch (self.hashType) {
             case YMHashHelperTypeMD5: {
                 unsigned char result[CC_MD5_DIGEST_LENGTH];
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 CC_MD5_Final(result, &self->_md5CTX);
+                #pragma clang diagnostic pop
                 NSMutableString *hash = [[NSMutableString alloc] initWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
                 for (NSUInteger i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
                     [hash appendFormat:@"%02x", result[i]];
