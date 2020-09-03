@@ -169,7 +169,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     #pragma clang diagnostic pop
     for (;;) {
         @autoreleasepool {
-            NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            NSData *fileData = nil;
+            if (@available(iOS 13.0, *)) {
+                fileData = [handle readDataUpToLength:kDefaultChunkSizeForReadingData error:nil];
+            } else {
+                fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            }
             if (fileData.length == 0) break;
             #pragma clang diagnostic push
             #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -212,7 +217,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     CC_SHA1_Init(&sha1);
     for (;;) {
         @autoreleasepool {
-            NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            NSData *fileData = nil;
+            if (@available(iOS 13.0, *)) {
+                fileData = [handle readDataUpToLength:kDefaultChunkSizeForReadingData error:nil];
+            } else {
+                fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            }
             if (fileData.length == 0) break;
             CC_SHA1_Update(&sha1, fileData.bytes, (CC_LONG)fileData.length);
         }
@@ -249,7 +259,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     CC_SHA256_Init(&sha256);
     for (;;) {
         @autoreleasepool {
-            NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            NSData *fileData = nil;
+            if (@available(iOS 13.0, *)) {
+                fileData = [handle readDataUpToLength:kDefaultChunkSizeForReadingData error:nil];
+            } else {
+                fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            }
             if (fileData.length == 0) break;
             CC_SHA256_Update(&sha256, fileData.bytes, (CC_LONG)fileData.length);
         }
@@ -286,7 +301,12 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
     CC_SHA512_Init(&sha512);
     for (;;) {
         @autoreleasepool {
-            NSData *fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            NSData *fileData = nil;
+            if (@available(iOS 13.0, *)) {
+                fileData = [handle readDataUpToLength:kDefaultChunkSizeForReadingData error:nil];
+            } else {
+                fileData = [handle readDataOfLength:kDefaultChunkSizeForReadingData];
+            }
             if (fileData.length == 0) break;
             CC_SHA512_Update(&sha512, fileData.bytes, (CC_LONG)fileData.length);
         }
