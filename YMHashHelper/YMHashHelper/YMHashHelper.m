@@ -9,11 +9,11 @@
 #import "YMHashHelper.h"
 #import <CommonCrypto/CommonDigest.h>
 
-#define CHECK_STRING_VALID(_STRING_) \
-({ id __a__ = (_STRING_); (__a__ && [__a__ isKindOfClass:[NSString class]] && (((NSString *)__a__).length > 0)); })
+#define CHECK_STRING_LEGAL(_STRING_) \
+({ id __a__ = (_STRING_); (__a__ && [__a__ isKindOfClass:[NSString class]]); })
 
-#define CHECK_DATA_VALID(_DATA_) \
-({ id __a__ = (_DATA_); (__a__ && [__a__ isKindOfClass:[NSData class]] && (((NSData *)__a__).length > 0)); })
+#define CHECK_DATA_LEGAL(_DATA_) \
+({ id __a__ = (_DATA_); (__a__ && [__a__ isKindOfClass:[NSData class]]); })
 
 typedef NS_ENUM(NSInteger, YMHashHelperType) {
     YMHashHelperTypeNone,
@@ -54,7 +54,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)md5WithString:(NSString *)string
 {
-    if (!CHECK_STRING_VALID(string)) {
+    if (!CHECK_STRING_LEGAL(string)) {
         return nil;
     }
     return [self md5WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
@@ -62,7 +62,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha1WithString:(NSString *)string
 {
-    if (!CHECK_STRING_VALID(string)) {
+    if (!CHECK_STRING_LEGAL(string)) {
         return nil;
     }
     return [self sha1WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
@@ -70,7 +70,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha256WithString:(NSString *)string
 {
-    if (!CHECK_STRING_VALID(string)) {
+    if (!CHECK_STRING_LEGAL(string)) {
         return nil;
     }
     return [self sha256WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
@@ -78,7 +78,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha512WithString:(NSString *)string
 {
-    if (!CHECK_STRING_VALID(string)) {
+    if (!CHECK_STRING_LEGAL(string)) {
         return nil;
     }
     return [self sha512WithData:[string dataUsingEncoding:NSUTF8StringEncoding]];
@@ -86,7 +86,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)md5WithData:(NSData *)data
 {
-    if (!CHECK_DATA_VALID(data)) {
+    if (!CHECK_DATA_LEGAL(data)) {
         return nil;
     }
     
@@ -105,7 +105,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha1WithData:(NSData *)data
 {
-    if (!CHECK_DATA_VALID(data)) {
+    if (!CHECK_DATA_LEGAL(data)) {
         return nil;
     }
     
@@ -121,7 +121,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha256WithData:(NSData *)data
 {
-    if (!CHECK_DATA_VALID(data)) {
+    if (!CHECK_DATA_LEGAL(data)) {
         return nil;
     }
     
@@ -137,7 +137,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha512WithData:(NSData *)data
 {
-    if (!CHECK_DATA_VALID(data)) {
+    if (!CHECK_DATA_LEGAL(data)) {
         return nil;
     }
     
@@ -153,7 +153,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)md5WithFilePath:(NSString *)filePath
 {
-    if (!CHECK_STRING_VALID(filePath)) {
+    if (!CHECK_STRING_LEGAL(filePath)) {
         return nil;
     }
     
@@ -204,7 +204,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha1WithFilePath:(NSString *)filePath
 {
-    if (!CHECK_STRING_VALID(filePath)) {
+    if (!CHECK_STRING_LEGAL(filePath)) {
         return nil;
     }
     
@@ -246,7 +246,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha256WithFilePath:(NSString *)filePath
 {
-    if (!CHECK_STRING_VALID(filePath)) {
+    if (!CHECK_STRING_LEGAL(filePath)) {
         return nil;
     }
     
@@ -288,7 +288,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
 
 + (NSString *)sha512WithFilePath:(NSString *)filePath
 {
-    if (!CHECK_STRING_VALID(filePath)) {
+    if (!CHECK_STRING_LEGAL(filePath)) {
         return nil;
     }
     
@@ -337,7 +337,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        if (!CHECK_DATA_VALID(data)) {
+        if (!CHECK_DATA_LEGAL(data)) {
             return;
         }
         
@@ -367,7 +367,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        if (!CHECK_DATA_VALID(data)) {
+        if (!CHECK_DATA_LEGAL(data)) {
             return;
         }
         
@@ -392,7 +392,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        if (!CHECK_DATA_VALID(data)) {
+        if (!CHECK_DATA_LEGAL(data)) {
             return;
         }
         
@@ -417,7 +417,7 @@ static const NSUInteger kDefaultChunkSizeForReadingData = 16384;
             return;
         }
         
-        if (!CHECK_DATA_VALID(data)) {
+        if (!CHECK_DATA_LEGAL(data)) {
             return;
         }
         
